@@ -31,7 +31,8 @@ const clientSchema = new mongoose.Schema({
     },
     active: {
         type: Boolean,
-        require: [false]
+        require: [false],
+        default: true
     },
 })
 

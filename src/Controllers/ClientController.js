@@ -1,10 +1,17 @@
 const Client = require('../Models/ClientSchema');
-require('dotenv-safe').config();
+const validation = require('../utils/validate');
+
+const access_list = async (req, res, next) => {
+    const clients = await Client.find()
+
+    return res.json(clients);
+}
+
 
 const access = async (req, res) => {
     const id = req.params.id;
-    let {name, cpf, email, phone, office, policeStation, city} = req.body;
-    const client = await Client.findOne({_id:id});;
+    
+    const client = await Client.findOne({_id:id});
 
     return res.json(client);
   };
@@ -12,12 +19,11 @@ const access = async (req, res) => {
 
 const create = async (req, res) => {
     let {name, cpf, email, phone, office, policeStation, city, active} = req.body;
-    console.log(name, cpf, email)
-    if (!validate(name, cpf, email, phone, office, policeStation, city)) {
+    if (!validation.validate(name, cpf, email, phone, office, policeStation, city)) {
         return res.json({"message":"invalid"});
     }
 
-    const client = ({
+    const client = await Client.create({
         name: name, 
 		cpf : cpf,
         email: email,
@@ -34,7 +40,7 @@ const update = async (req, res) => {
     const id = req.params.id;
     let {name, cpf, email, phone, office, policeStation, city} = req.body;
 
-    if (!validate(name, cpf, email, phone, office, policeStation, city)) {
+    if (!validation.validate(name, cpf, email, phone, office, policeStation, city)) {
         return res.json({"message":"invalid"});
     }
 
@@ -105,7 +111,7 @@ const desactivate = async (req, res) => {
     const id = req.params.id
     let {name, cpf, email, phone, office, policeStation, city, active} = req.body;
 
-	if (!validate(name, cpf, email, phone, office, policeStation, city)) {
+	if (!validation.validate(name, cpf, email, phone, office, policeStation, city)) {
         return res.json({"message":"invalid"});
     }
 
@@ -129,47 +135,4 @@ const desactivate = async (req, res) => {
     return updateReturn;
 }
 
-const validate = (name, cpf, email, phone, office, policeStation, city) => {
-    if ( !validateName(name) || !validateCpf(cpf) || !validateEmail(email) || !validatePhone(phone) || !validateOffice(office) || !validatePoliceStation(policeStation) || !validateCity(city)) {
-        return false;
-    }
-    return true;
-}
-
-const validateName = (name) => {
-    const regex = /^[a-zA-Z ]{2,30}$/;
-    return regex.test(name);
-} 
-
-const validateCpf = (cpf) => {
-    const regex = /^[0-9]{11}$/;
-    return regex.test(cpf);
-} 
-
-const validateEmail = (email) => {
-    const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return regex.test(email);   
-}
-
-const validatePhone = (phone) => {
-    const regex = /^[0-9]{8,}$/;
-    return regex.test(phone);
-} 
-
-const validateOffice = (office) => {
-    const regex = /^[a-zA-Z ]{2,}$/;
-    return regex.test(office);
-}
-
-const validatePoliceStation = (policeStation) => {
-    const regex = /^[a-zA-Z ]{2,}$/;
-    return regex.test(policeStation);
-}
-
-const validateCity = (city) => {
-    const regex = /^[a-zA-Z ]{2,}$/;
-    return regex.test(city);
-}
-
-module.exports = {access, create, update, desactivate}
-
+module.exports = {access_list, access, create, update, desactivate}
