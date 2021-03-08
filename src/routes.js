@@ -1,12 +1,13 @@
-const express = require('express')
+const express = require('express');
+
 const routes = express.Router();
 
-const ClientController = require('./Controllers/ClientController')
+const ClientController = require('./Controllers/ClientController');
 
-routes.post('/clients/create', ClientController.create)
-routes.get('/clients/:id', ClientController.access)
-routes.put('/clients/update/:id', ClientController.update)
-routes.put('/clients/desactivate/:id', ClientController.desactivate)
-routes.get('/clients', ClientController.access_list)
+routes.post('/clients/create', ClientController.create);
+routes.get('/clients/:id', ClientController.access);
+routes.put('/clients/update/:id', ClientController.update);
+routes.put('/clients/desactivate/:id', ClientController.desactivate);
+routes.get('/clients', ClientController.accessList);
 
 module.exports = routes;

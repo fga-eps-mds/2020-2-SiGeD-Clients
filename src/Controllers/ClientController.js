@@ -1,134 +1,132 @@
 const Client = require('../Models/ClientSchema');
 const validation = require('../utils/validate');
 
-const access_list = async (req, res, next) => {
-    const clients = await Client.find()
+const accessList = async (req, res) => {
+  const clients = await Client.find();
 
-    return res.json(clients);
-}
-
+  return res.json(clients);
+};
 
 const access = async (req, res) => {
-    const id = req.params.id;
-    
-    const client = await Client.find({_id:id});
+  const { id } = req.params;
 
-    return res.json(client);
-  };
+  const client = await Client.find({ _id: id });
 
+  return res.json(client);
+};
 
 const create = async (req, res) => {
-    let {name, cpf, email, phone, office, policeStation, city, active} = req.body;
-    if (!validation.validate(name, cpf, email, phone, office, policeStation, city)) {
-        return res.json({"message":"invalid"});
-    }
+  const {
+    name, cpf, email, phone, office, policeStation, city, active,
+  } = req.body;
+  if (!validation.validate(name, cpf, email, phone, office, policeStation, city)) {
+    return res.json({ message: 'invalid' });
+  }
 
-    const client = await Client.create({
-        name: name, 
-		cpf : cpf,
-        email: email,
-		phone : phone,
-		office : office,
-		policeStation : policeStation,
-        city : city,
-        active: active,
-    });
-    return res.json(client);
-}
+  const client = await Client.create({
+    name,
+    cpf,
+    email,
+    phone,
+    office,
+    policeStation,
+    city,
+    active,
+  });
+  return res.json(client);
+};
 
 const update = async (req, res) => {
-    const id = req.params.id;
-    let {name, cpf, email, phone, office, policeStation, city} = req.body;
+  const { id } = req.params;
+  let {
+    name, cpf, email, phone, office, policeStation, city,
+  } = req.body;
 
-    if (!validation.validate(name, cpf, email, phone, office, policeStation, city)) {
-        return res.json({"message":"invalid"});
+  if (!validation.validate(name, cpf, email, phone, office, policeStation, city)) {
+    return res.json({ message: 'invalid' });
+  }
+
+  const clientFound = await Client.findOne({ _id: id });
+
+  if (req.body.name === clientFound.name) {
+    name = clientFound.name;
+  } else {
+    name = await name;
+  }
+
+  if (req.body.cpf === clientFound.cpf) {
+    cpf = clientFound.cpf;
+  } else {
+    cpf = await cpf;
+  }
+
+  if (req.body.email === clientFound.email) {
+    email = clientFound.email;
+  } else {
+    email = await email;
+  }
+
+  if (req.body.phone === clientFound.phone) {
+    phone = clientFound.phone;
+  } else {
+    phone = await phone;
+  }
+
+  if (req.body.office === clientFound.office) {
+    office = clientFound.office;
+  } else {
+    office = await office;
+  }
+
+  if (req.body.policeStation === clientFound.policeStation) {
+    policeStation = clientFound.policeStation;
+  } else {
+    policeStation = await policeStation;
+  }
+
+  if (req.body.city === clientFound.city) {
+    city = clientFound.city;
+  } else {
+    city = await city;
+  }
+
+  const updateReturn = await Client.findOneAndUpdate({ _id: id }, {
+    name, cpf, email, phone, office, policeStation, city,
+  },
+  { new: true }, (err, client) => {
+    if (err) {
+      return res.json(err);
     }
-
-    const clientFound = await Client.findOne({_id:id});
-
-    if (req.body.name === clientFound.name) {
-        name = clientFound.name;
-    } 
-    else { 
-        name = await name;
-    }
-
-    if (req.body.cpf === clientFound.cpf) {
-        cpf = clientFound.cpf;
-    } 
-    else { 
-        cpf = await cpf;
-    }
-
-    if (req.body.email === clientFound.email) {
-        email = clientFound.email;
-    } 
-    else { 
-        email = await email;
-    }
-
-    if (req.body.phone === clientFound.phone) {
-        phone = clientFound.phone;
-    } 
-    else { 
-        phone = await phone;
-    }
-
-    if (req.body.office === clientFound.office) {
-        office = clientFound.office;
-    } 
-    else { 
-        office = await office;
-    }
-
-    if (req.body.policeStation === clientFound.policeStation) {
-        policeStation = clientFound.policeStation;
-    } 
-    else { 
-        policeStation = await policeStation;
-    }
-
-	if (req.body.city === clientFound.city) {
-        city = clientFound.city;
-    } 
-    else { 
-        city = await city;
-    }
-
-    const updateReturn = await Client.findOneAndUpdate({_id:id}, {name, cpf, email, phone, office, policeStation, city}, 
-        { new:  true }, (err, client)=>{
-            if (err) {
-                return res.json(err);
-            } else {
-                return res.json(client);
-            }
-    })
-    return updateReturn;
-}
+    return res.json(client);
+  });
+  return updateReturn;
+};
 
 const desactivate = async (req, res) => {
-    const id = req.params.id
+  const { id } = req.params;
 
-    const clientFound = await Client.findOne({_id:id});
+  const clientFound = await Client.findOne({ _id: id });
 
-    let active = clientFound.active;
+  let { active } = clientFound;
 
-    if(active === true){
-        active = !active;
-    }
-    else{
-        active = active
-    }
+  if (!validation.validateActive(active)) {
+    return res.json({ message: 'invalid' });
+  }
 
-	const updateReturn = await Client.findOneAndUpdate({_id:id}, {active}, 
-        { new:  true }, (err, client)=>{
-            if (err) {
-                return res.json(err);
-            } else {
-                return res.json(client);
-            }
-    })
-    return updateReturn;
-}
+  if (active === true) {
+    active = !active;
+  }
 
-module.exports = {access_list, access, create, update, desactivate}
+  const updateReturn = await Client.findOneAndUpdate({ _id: id }, { active },
+    { new: true }, (err, client) => {
+      if (err) {
+        return res.json(err);
+      }
+      return res.json(client);
+    });
+  return updateReturn;
+};
+
+module.exports = {
+  accessList, access, create, update, desactivate,
+};
