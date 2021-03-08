@@ -11,7 +11,7 @@ const access_list = async (req, res, next) => {
 const access = async (req, res) => {
     const id = req.params.id;
     
-    const client = await Client.findOne({_id:id});
+    const client = await Client.find({_id:id});
 
     return res.json(client);
   };
@@ -106,25 +106,21 @@ const update = async (req, res) => {
     return updateReturn;
 }
 
-// Precisa ser repensado, provavelmente está errada a implementação
 const desactivate = async (req, res) => {
     const id = req.params.id
-    let {name, cpf, email, phone, office, policeStation, city, active} = req.body;
-
-	if (!validation.validate(name, cpf, email, phone, office, policeStation, city)) {
-        return res.json({"message":"invalid"});
-    }
 
     const clientFound = await Client.findOne({_id:id});
 
-    if(req.body.active === false){
-        active = !clientFound.active;
+    let active = clientFound.active;
+
+    if(active === true){
+        active = !active;
     }
     else{
         active = active
     }
 
-	const updateReturn = await Client.findOneAndUpdate({_id:id}, {name, cpf, email, phone, office, policeStation, city, active}, 
+	const updateReturn = await Client.findOneAndUpdate({_id:id}, {active}, 
         { new:  true }, (err, client)=>{
             if (err) {
                 return res.json(err);

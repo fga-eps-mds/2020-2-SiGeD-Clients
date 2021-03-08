@@ -6,7 +6,7 @@ const validate = (name, cpf, email, phone, office, policeStation, city) => {
 }
 
 const validateName = (name) => {
-    const regex = /^[a-zA-Z]{2,30}$/;
+    const regex = /^[a-zA-Z ]{2,30}$/;
     return regex.test(name);
 } 
 
