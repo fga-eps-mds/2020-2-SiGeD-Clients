@@ -1,44 +1,67 @@
 const validateName = (name) => {
-  const regex = /^[a-zA-Z ]{2,30}$/;
-  return regex.test(name);
+  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{2,}$/;
+  if (!regex.test(name)) {
+    return 'invalid name';
+  } return true;
 };
 
 const validateCpf = (cpf) => {
   const regex = /^[0-9]{11}$/;
-  return regex.test(cpf);
+  if (!regex.test(cpf)) {
+    return 'invalid cpf';
+  } return true;
 };
 
 const validateEmail = (email) => {
   const regex = /^(([^<>()[\]\\.,;:\s@\\"]+(\.[^<>()[\]\\.,;:\s@\\"]+)*)|(\\".+\\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return regex.test(email);
+  if (!regex.test(email)) {
+    return 'invalid email';
+  } return true;
 };
 
 const validatePhone = (phone) => {
   const regex = /^[0-9]{8,}$/;
-  return regex.test(phone);
+  if (!regex.test(phone)) {
+    return 'invalid phone';
+  } return true;
 };
 
 const validateOffice = (office) => {
-  const regex = /^[a-zA-Z ]{2,}$/;
-  return regex.test(office);
+  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{2,}$/;
+  if (!regex.test(office)) {
+    return 'invalid office';
+  } return true;
 };
 
 const validatePoliceStation = (policeStation) => {
-  const regex = /^[a-zA-Z ]{2,}$/;
-  return regex.test(policeStation);
+  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{2,}$/;
+  if (!regex.test(policeStation)) {
+    return 'invalid policeStation';
+  } return true;
 };
 
 const validateCity = (city) => {
-  const regex = /^[a-zA-Z ]{2,}$/;
-  return regex.test(city);
+  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{2,}$/;
+  if (!regex.test(city)) {
+    return 'invalid city';
+  } return true;
 };
 
 const validate = (name, cpf, email, phone, office, policeStation, city) => {
-  if
-  (!validateName(name) || !validateCpf(cpf) || !validateEmail(email)
-  || !validatePhone(phone) || !validateOffice(office) || !validatePoliceStation(policeStation)
-  || !validateCity(city)) {
-    return false;
+  if (validateName(name) !== true) {
+    return validateName(name);
+  } if (validateCpf(cpf) !== true) {
+    return validateCpf(cpf);
+  } if (validateEmail(email) !== true) {
+    return validateEmail(email);
+  } if (validatePhone(phone) !== true) {
+    return validatePhone(phone);
+  } if (validateOffice(office) !== true) {
+    return validateOffice(office);
+  } if (validatePoliceStation(policeStation) !== true) {
+    return validatePoliceStation(policeStation);
+  } if (validateCity(city) !== true) {
+    return validateCity(city);
   }
   return true;
 };
