@@ -8,10 +8,12 @@ const clientSchema = new mongoose.Schema({
   cpf: {
     type: String,
     require: [true],
+    unique: [true],
   },
   email: {
     type: String,
     require: [true],
+    unique: [true],
   },
   phone: {
     type: String,

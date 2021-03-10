@@ -22,27 +22,25 @@ const create = async (req, res) => {
 
   const errorMessage = validation.validate(name, cpf, email, phone, office, policeStation, city);
 
-  if (errorMessage !== true) {
-    return res.json({ message: `${errorMessage}` });
+  if (errorMessage.length) {
+    return res.json({ message: errorMessage });
   }
 
-  const clientFound = await Client.findOne({ email });
-
-  if (req.body.email === clientFound.email) {
-    return res.json({ message: 'email already used' });
+  try {
+    const client = await Client.create({
+      name,
+      cpf,
+      email,
+      phone,
+      office,
+      policeStation,
+      city,
+      active,
+    });
+    return res.json(client);
+  } catch (error) {
+    return res.json({ duplicated: error.keyValue });
   }
-
-  const client = await Client.create({
-    name,
-    cpf,
-    email,
-    phone,
-    office,
-    policeStation,
-    city,
-    active,
-  });
-  return res.json(client);
 };
 
 const update = async (req, res) => {
@@ -53,25 +51,19 @@ const update = async (req, res) => {
 
   const errorMessage = validation.validate(name, cpf, email, phone, office, policeStation, city);
 
-  if (errorMessage !== true) {
-    return res.json({ message: `${errorMessage}` });
-  }
-  const clientFound = await Client.findOne({ email });
-
-  if (id !== clientFound.id) {
-    return res.json({ message: 'email already used' });
+  if (errorMessage.length) {
+    return res.json({ message: errorMessage });
   }
 
-  const updateReturn = await Client.findOneAndUpdate({ _id: id }, {
-    name, cpf, email, phone, office, policeStation, city,
-  },
-  { new: true }, (err, client) => {
-    if (err) {
-      return res.json(err);
-    }
+  try {
+    const client = await Client.findOneAndUpdate({ _id: id }, {
+      name, cpf, email, phone, office, policeStation, city,
+    },
+    { new: true });
     return res.json(client);
-  });
-  return updateReturn;
+  } catch (error) {
+    return res.json({ duplicated: error.keyValue });
+  }
 };
 
 const deactivate = async (req, res) => {
