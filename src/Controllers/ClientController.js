@@ -2,7 +2,7 @@ const Client = require('../Models/ClientSchema');
 const validation = require('../utils/validate');
 
 const accessList = async (req, res) => {
-  const clients = await Client.find({active: true});
+  const clients = await Client.find({ active: true });
 
   return res.json(clients);
 };
