@@ -36,7 +36,14 @@ const clientSchema = new mongoose.Schema({
     require: [false],
     default: true,
   },
+  createdAt: {
+    type: Date,
+    require: true,
+  },
+  updatedAt: {
+    type: Date,
+    require: true,
+  },
 });
 
-clientSchema.set('timestamps', true);
 module.exports = mongoose.model('Client', clientSchema);

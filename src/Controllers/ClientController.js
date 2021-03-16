@@ -1,3 +1,4 @@
+const moment = require('moment-timezone');
 const Client = require('../Models/ClientSchema');
 const validation = require('../utils/validate');
 
@@ -36,6 +37,8 @@ const create = async (req, res) => {
       policeStation,
       city,
       active,
+      createdAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
+      updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
     });
     return res.json(client);
   } catch (error) {
@@ -57,7 +60,14 @@ const update = async (req, res) => {
 
   try {
     const client = await Client.findOneAndUpdate({ _id: id }, {
-      name, cpf, email, phone, office, policeStation, city,
+      name,
+      cpf,
+      email,
+      phone,
+      office,
+      policeStation,
+      city,
+      updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
     },
     { new: true });
     return res.json(client);
