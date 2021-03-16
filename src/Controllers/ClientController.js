@@ -23,7 +23,7 @@ const create = async (req, res) => {
   const errorMessage = validation.validate(name, cpf, email, phone, office, policeStation, city);
 
   if (errorMessage.length) {
-    return res.json({ message: errorMessage });
+    return res.status(400).json({ message: errorMessage });
   }
 
   try {
@@ -39,7 +39,7 @@ const create = async (req, res) => {
     });
     return res.json(client);
   } catch (error) {
-    return res.json({ duplicated: error.keyValue });
+    return res.status(400).json({ duplicated: error.keyValue });
   }
 };
 
@@ -52,7 +52,7 @@ const update = async (req, res) => {
   const errorMessage = validation.validate(name, cpf, email, phone, office, policeStation, city);
 
   if (errorMessage.length) {
-    return res.json({ message: errorMessage });
+    return res.status(400).json({ message: errorMessage });
   }
 
   try {
@@ -62,7 +62,7 @@ const update = async (req, res) => {
     { new: true });
     return res.json(client);
   } catch (error) {
-    return res.json({ duplicated: error.keyValue });
+    return res.status(400).json({ duplicated: error.keyValue });
   }
 };
 
@@ -74,7 +74,7 @@ const deactivate = async (req, res) => {
   let { active } = clientFound;
 
   if (!validation.validateActive(active)) {
-    return res.json({ message: 'invalid active value' });
+    return res.status(400).json({ message: 'invalid active value' });
   }
 
   active = false;
@@ -82,7 +82,7 @@ const deactivate = async (req, res) => {
   const updateReturn = await Client.findOneAndUpdate({ _id: id }, { active },
     { new: true }, (err, client) => {
       if (err) {
-        return res.json(err);
+        return res.status(400).json(err);
       }
       return res.json(client);
     });
