@@ -1,0 +1,23 @@
+{
+  "name": "2020-2-G4-Clients",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/fga-eps-mds/2020-2-G4-Clients.git",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "moment-timezone": "^0.5.33",
+    "mongoose": "^5.11.19"
+  },
+  "devDependencies": {
+    "eslint": "^7.21.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "nodemon": "^2.0.7"
+  }
+}
