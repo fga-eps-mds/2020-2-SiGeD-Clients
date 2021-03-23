@@ -19,12 +19,12 @@ const validatePhone = (phone) => {
 };
 
 const validateOffice = (office) => {
-  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9ªº]{2,}$/;
+  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9ªº () ]{2,}$/;
   return regex.test(office);
 };
 
 const validatePoliceStation = (policeStation) => {
-  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9ªº]{2,}$/;
+  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9ªº ()]{2,}$/;
   return regex.test(policeStation);
 };
 
