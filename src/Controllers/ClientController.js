@@ -21,6 +21,8 @@ const create = async (req, res) => {
     name, cpf, email, phone, office, policeStation, city, active,
   } = req.body;
 
+  console.log('abc');
+
   const errorMessage = validation.validate(name, cpf, email, phone, office, policeStation, city);
 
   if (errorMessage.length) {
