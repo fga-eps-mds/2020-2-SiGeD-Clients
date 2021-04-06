@@ -3,6 +3,12 @@ const Client = require('../Models/ClientSchema');
 const validation = require('../utils/validate');
 
 const accessList = async (req, res) => {
+  const { active } = req.query;
+  if (active === 'false') {
+    const clients = await Client.find({ active });
+    return res.json(clients);
+  }
+
   const clients = await Client.find({ active: true });
 
   return res.json(clients);
