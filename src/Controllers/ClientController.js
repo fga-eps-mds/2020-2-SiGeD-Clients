@@ -82,7 +82,7 @@ const update = async (req, res) => {
   }
 };
 
-const deactivate = async (req, res) => {
+const toggleStatus = async (req, res) => {
   const { id } = req.params;
 
   const clientFound = await Client.findOne({ _id: id });
@@ -93,7 +93,7 @@ const deactivate = async (req, res) => {
     return res.status(400).json({ message: 'invalid active value' });
   }
 
-  active = false;
+  active = !clientFound.active;
 
   const updateReturn = await Client.findOneAndUpdate({ _id: id }, { active },
     { new: true }, (err, client) => {
@@ -106,5 +106,5 @@ const deactivate = async (req, res) => {
 };
 
 module.exports = {
-  accessList, access, create, update, deactivate,
+  accessList, access, create, update, toggleStatus,
 };
