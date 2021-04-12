@@ -18,22 +18,7 @@ const validatePhone = (phone) => {
   return regex.test(phone);
 };
 
-const validateOffice = (office) => {
-  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9ªº () ]{2,}$/;
-  return regex.test(office);
-};
-
-const validatePoliceStation = (policeStation) => {
-  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9ªº ()]{2,}$/;
-  return regex.test(policeStation);
-};
-
-const validateCity = (city) => {
-  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{2,}$/;
-  return regex.test(city);
-};
-
-const validate = (name, cpf, email, phone, office, policeStation, city) => {
+const validate = (name, cpf, email, phone, office) => {
   const err = [];
 
   if (!validateName(name)) {
@@ -44,13 +29,8 @@ const validate = (name, cpf, email, phone, office, policeStation, city) => {
     err.push('invalid email');
   } if (!validatePhone(phone)) {
     err.push('invalid phone');
-  } if (!validateOffice(office)) {
-    err.push('invalid office');
-  } if (!validatePoliceStation(policeStation)) {
-    err.push('invalid police station');
-  } if (!validateCity(city)) {
-    err.push('invalid city');
   }
+
   return err;
 };
 

@@ -24,10 +24,10 @@ const access = async (req, res) => {
 
 const create = async (req, res) => {
   const {
-    name, cpf, email, phone, office, policeStation, city, active,
+    name, cpf, email, phone, secondaryPhone, address, office, active, location
   } = req.body;
 
-  const errorMessage = validation.validate(name, cpf, email, phone, office, policeStation, city);
+  const errorMessage = validation.validate(name, cpf, email, phone, office);
 
   if (errorMessage.length) {
     return res.status(400).json({ message: errorMessage });
@@ -39,26 +39,27 @@ const create = async (req, res) => {
       cpf,
       email,
       phone,
+      secondaryPhone,
       office,
-      policeStation,
-      city,
+      location,
+      address,
       active,
       createdAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
       updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
     });
     return res.json(client);
   } catch (error) {
-    return res.status(400).json({ duplicated: error.keyValue });
+    return res.status(400).json({ message: error.keyValue });
   }
 };
 
 const update = async (req, res) => {
   const { id } = req.params;
   const {
-    name, cpf, email, phone, office, policeStation, city,
+    name, cpf, email, phone, secondaryPhone, office, address,
   } = req.body;
 
-  const errorMessage = validation.validate(name, cpf, email, phone, office, policeStation, city);
+  const errorMessage = validation.validate(name, cpf, email, phone, office);
 
   if (errorMessage.length) {
     return res.status(400).json({ message: errorMessage });
@@ -70,9 +71,10 @@ const update = async (req, res) => {
       cpf,
       email,
       phone,
+      secondaryPhone,
       office,
-      policeStation,
-      city,
+      location,
+      address,
       updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
     },
     { new: true });
