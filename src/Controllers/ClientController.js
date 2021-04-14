@@ -3,6 +3,12 @@ const Client = require('../Models/ClientSchema');
 const validation = require('../utils/validate');
 
 const accessList = async (req, res) => {
+  const { active } = req.query;
+  if (active === 'false') {
+    const clients = await Client.find({ active });
+    return res.json(clients);
+  }
+
   const clients = await Client.find({ active: true });
 
   return res.json(clients);
@@ -76,7 +82,7 @@ const update = async (req, res) => {
   }
 };
 
-const deactivate = async (req, res) => {
+const toggleStatus = async (req, res) => {
   const { id } = req.params;
 
   const clientFound = await Client.findOne({ _id: id });
@@ -87,7 +93,7 @@ const deactivate = async (req, res) => {
     return res.status(400).json({ message: 'invalid active value' });
   }
 
-  active = false;
+  active = !clientFound.active;
 
   const updateReturn = await Client.findOneAndUpdate({ _id: id }, { active },
     { new: true }, (err, client) => {
@@ -100,5 +106,5 @@ const deactivate = async (req, res) => {
 };
 
 module.exports = {
-  accessList, access, create, update, deactivate,
+  accessList, access, create, update, toggleStatus,
 };
