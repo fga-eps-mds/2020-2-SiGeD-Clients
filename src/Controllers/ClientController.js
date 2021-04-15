@@ -29,7 +29,6 @@ const create = async (req, res) => {
 
   const errorMessage = validation.validate(name, cpf, email, phone, secondaryPhone, office);
 
-
   if (errorMessage.length) {
     return res.status(400).json({ message: errorMessage });
   }
