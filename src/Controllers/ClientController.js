@@ -24,10 +24,11 @@ const access = async (req, res) => {
 
 const create = async (req, res) => {
   const {
-    name, cpf, email, phone, secondaryPhone, address, office, active, location
+    name, cpf, email, phone, secondaryPhone, address, office, active, location,
   } = req.body;
 
-  const errorMessage = validation.validate(name, cpf, email, phone, office);
+  const errorMessage = validation.validate(name, cpf, email, phone, secondaryPhone, office);
+
 
   if (errorMessage.length) {
     return res.status(400).json({ message: errorMessage });
@@ -56,10 +57,10 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   const { id } = req.params;
   const {
-    name, cpf, email, phone, secondaryPhone, office, address,
+    name, cpf, email, phone, secondaryPhone, office, address, location,
   } = req.body;
 
-  const errorMessage = validation.validate(name, cpf, email, phone, office);
+  const errorMessage = validation.validate(name, cpf, email, phone, secondaryPhone, office);
 
   if (errorMessage.length) {
     return res.status(400).json({ message: errorMessage });

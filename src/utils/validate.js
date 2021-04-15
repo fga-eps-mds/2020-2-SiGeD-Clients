@@ -18,7 +18,7 @@ const validatePhone = (phone) => {
   return regex.test(phone);
 };
 
-const validate = (name, cpf, email, phone, office) => {
+const validate = (name, cpf, email, phone, secondaryPhone) => {
   const err = [];
 
   if (!validateName(name)) {
@@ -29,6 +29,8 @@ const validate = (name, cpf, email, phone, office) => {
     err.push('invalid email');
   } if (!validatePhone(phone)) {
     err.push('invalid phone');
+  } if (!validatePhone(secondaryPhone)) {
+    err.push('invalid secondary phone');
   }
 
   return err;
