@@ -10,18 +10,20 @@ describe('Sample Test', () => {
     cpf: '17834632140',
     email: 'davi@gmail.com',
     phone: '988884444',
+    secondaryPhone: '998888444',
     office: 'Policial',
-    policeStation: 'DPSS',
-    city: 'brasília',
+    location: 'DPSS',
+    address: 'brasília',
   };
   const falseClient = {
     name: 'Bruno',
     cpf: '17840632140',
     email: 'brunoTI@gmail.com',
     phone: '977854444',
+    secondaryPhone: '998888444',
     office: 'Policial',
-    policeStation: 'DPSS',
-    city: 'Ceilândia',
+    location: 'DPSS',
+    address: 'Ceilândia',
     active: false,
   };
   const token = jwt.sign({
@@ -29,9 +31,10 @@ describe('Sample Test', () => {
     cpf: '12345678911',
     email: 'test@hotmail.com',
     phone: '988884444',
+    secondaryPhone: '998888444',
     office: 'Policial',
-    policeStation: 'DPSS',
-    city: 'brasilia',
+    location: 'DPSS',
+    address: 'brasilia',
   }, process.env.SECRET, {
     expiresIn: 240,
   });
@@ -45,11 +48,12 @@ describe('Sample Test', () => {
     const res = await request(app).post('/clients/create/').set('x-access-token', token).send(client);
     expect(res.statusCode).toBe(200);
     expect(res.body.phone).toBe(client.phone);
+    expect(res.body.secondaryPhone).toBe(client.secondaryPhone);
     expect(res.body.cpf).toBe(client.cpf);
     expect(res.body.name).toBe(client.name);
     expect(res.body.email).toBe(client.email);
-    expect(res.body.policeStation).toBe(client.policeStation);
-    expect(res.body.city).toBe(client.city);
+    expect(res.body.location).toBe(client.location);
+    expect(res.body.address).toBe(client.address);
     expect(res.body.office).toBe(client.office);
     id = res.body._id;
     done();
@@ -59,11 +63,12 @@ describe('Sample Test', () => {
     const res = await request(app).post('/clients/create/').set('x-access-token', token).send(falseClient);
     expect(res.statusCode).toBe(200);
     expect(res.body.phone).toBe(falseClient.phone);
+    expect(res.body.secondaryPhone).toBe(falseClient.secondaryPhone);
     expect(res.body.cpf).toBe(falseClient.cpf);
     expect(res.body.name).toBe(falseClient.name);
     expect(res.body.email).toBe(falseClient.email);
-    expect(res.body.policeStation).toBe(falseClient.policeStation);
-    expect(res.body.city).toBe(falseClient.city);
+    expect(res.body.location).toBe(falseClient.location);
+    expect(res.body.address).toBe(falseClient.address);
     expect(res.body.office).toBe(falseClient.office);
     expect(res.body.active).toBe(falseClient.active);
     falseId = res.body._id;
@@ -76,13 +81,14 @@ describe('Sample Test', () => {
       cpf: '',
       email: '',
       phone: '',
+      secondaryPhone: '',
       office: '',
-      policeStation: '',
-      city: ''
+      location: '',
+      address: ''
     };
     const res = await request(app).post('/clients/create/').set('x-access-token', token).send(errorClient);
     expect(res.statusCode).toBe(400);
-    expect(res.body.message).toEqual(["invalid name", "invalid cpf", "invalid email","invalid phone", "invalid office", "invalid police station", "invalid city"]);
+    expect(res.body.message).toEqual(["invalid name", "invalid cpf", "invalid email","invalid phone", "invalid secondary phone"]);
     done();
   });
 
@@ -93,9 +99,10 @@ describe('Sample Test', () => {
     expect(res.body[0].cpf).toBe(client.cpf);
     expect(res.body[0].email).toBe(client.email);
     expect(res.body[0].phone).toBe(client.phone);
+    expect(res.body[0].secondaryPhone).toBe(client.secondaryPhone);
     expect(res.body[0].office).toBe(client.office);
-    expect(res.body[0].policeStation).toBe(client.policeStation);
-    expect(res.body[0].city).toBe(client.city);
+    expect(res.body[0].location).toBe(client.location);
+    expect(res.body[0].address).toBe(client.address);
     expect(res.body[0].active).toBe(true);
     done();
   });
@@ -103,17 +110,17 @@ describe('Sample Test', () => {
   it('Get deactivated clients', async (done) => {
     const res = await request(app).get('/clients?active=false').set('x-access-token', token);
     expect(res.statusCode).toBe(200);
-    expect(res.body[0].city).toBe(falseClient.city);
-    expect(res.body[0].policeStation).toBe(falseClient.policeStation);
+    expect(res.body[0].address).toBe(falseClient.address);
+    expect(res.body[0].location).toBe(falseClient.location);
     expect(res.body[0].email).toBe(falseClient.email);
     expect(res.body[0].office).toBe(falseClient.office);
     expect(res.body[0].cpf).toBe(falseClient.cpf);
     expect(res.body[0].name).toBe(falseClient.name);
     expect(res.body[0].phone).toBe(falseClient.phone);
+    expect(res.body[0].secondaryPhone).toBe(falseClient.secondaryPhone);
     expect(res.body[0].active).toBe(false);
     done();
   });
-
 });
 
 afterAll(async (done) => {

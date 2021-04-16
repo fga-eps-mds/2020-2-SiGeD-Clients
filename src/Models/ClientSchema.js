@@ -19,15 +19,19 @@ const clientSchema = new mongoose.Schema({
     type: String,
     require: [true],
   },
+  secondaryPhone: {
+    type: String,
+    require: [true],
+  },
   office: {
     type: String,
     require: [true],
   },
-  policeStation: {
+  location: {
     type: String,
     require: [true],
   },
-  city: {
+  address: {
     type: String,
     require: [true],
   },
