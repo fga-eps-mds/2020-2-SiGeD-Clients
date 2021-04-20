@@ -1,8 +1,8 @@
 {
-  "name": "2020-2-G4-Clients",
+  "name": "2020-2-SiGeD-Clients",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/fga-eps-mds/2020-2-G4-Clients.git",
+  "repository": "https://github.com/fga-eps-mds/2020-2-SiGeD-Clients.git",
   "author": "",
   "license": "MIT",
   "scripts": {
