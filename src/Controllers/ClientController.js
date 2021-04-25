@@ -20,9 +20,13 @@ const accessList = async (req, res) => {
 const access = async (req, res) => {
   const { id } = req.params;
 
-  const client = await Client.findOne({ _id: id });
+  try {
+    const client = await Client.findOne({ _id: id });
+    return res.json(client);
+  } catch (error) {
+    return res.status(400).json({message: 'Client not found'})
+  }
 
-  return res.json(client);
 };
 
 const create = async (req, res) => {
@@ -38,8 +42,11 @@ const create = async (req, res) => {
 
   try {
     const token = req.headers['x-access-token'];
-    await userConnection.checkUserPermission(res, userID, token);
+    const userConnections = await userConnection.checkUserPermission(res, userID, token);
 
+    if (userConnections.error) {
+      return res.status(400).json({ message: userConnections.error });
+    }
     const date = moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate();
     const client = await Client.create({
       name,
@@ -79,7 +86,12 @@ const update = async (req, res) => {
 
   try {
     const token = req.headers['x-access-token'];
-    await userConnection.checkUserPermission(res, userID, token);
+
+    const userConnections = await userConnection.checkUserPermission(res, userID, token);
+
+    if (userConnections.error) {
+      return res.status(400).json({ message: userConnections.error });
+    }
 
     const history = await verifyChanges(req.body, id); 
     const client = await Client.findOneAndUpdate({ _id: id }, {
@@ -102,36 +114,46 @@ const update = async (req, res) => {
 };
 
 const toggleStatus = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  const clientFound = await Client.findOne({ _id: id });
+    const clientFound = await Client.findOne({ _id: id });
 
-  let { active } = clientFound;
+    let { active } = clientFound;
 
-  if (!validation.validateActive(active)) {
-    return res.status(400).json({ message: 'invalid active value' });
+    if (!validation.validateActive(active)) {
+      return res.status(400).json({ message: 'invalid active value' });
+    }
+
+    active = !clientFound.active;
+
+    const updateReturn = await Client.findOneAndUpdate({ _id: id }, { active },
+      { new: true }, (err, client) => {
+        if (err) {
+          return res.status(400).json(err);
+        }
+        return res.json(client);
+      });
+    return updateReturn;
+  }catch (err) {
+    return res.status(400).json({message: 'Client not found'})
   }
-
-  active = !clientFound.active;
-
-  const updateReturn = await Client.findOneAndUpdate({ _id: id }, { active },
-    { new: true }, (err, client) => {
-      if (err) {
-        return res.status(400).json(err);
-      }
-      return res.json(client);
-    });
-  return updateReturn;
 };
 
 const history = async (req, res) => {
   const { id } = req.params;
 
   try {
+    let error = '';
     const token = req.headers['x-access-token'];
     const clientFound = await Client.findOne({ _id: id });
     const history = await Promise.all(clientFound.history.map(async (elem) => {
       const user = await userConnection.getUser(req, elem.userID, token);
+
+      if (user.error) {
+        error = user.error
+        return
+      }
       return {
         label: elem.label,
         before: elem.before,
@@ -145,6 +167,9 @@ const history = async (req, res) => {
         }
       }
     }))
+    if (error) {
+      return res.status(400).json({ message: error });
+    }
     return res.json(history)
 
   } catch (error) {

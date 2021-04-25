@@ -2,9 +2,10 @@ const axios = require('axios');
 
 const checkUserPermission = async (res, userID, token) => {
   const user = await getUser(res, userID, token)
-  if(user === null){
-    return res.status(400).json({ message: "User not found" });
+  if(!user){
+    return { error: 'User not found' };
   }
+  return user
 }
 
 const getUser = async (res, userID, token) => {
@@ -13,7 +14,7 @@ const getUser = async (res, userID, token) => {
       .then((response) => response.data)
     return user
   } catch {
-    return res.status(400).json({err: 'Could not connect to api_users'});
+    return { error: 'Could not connect to user api' };
   }
 }
 
