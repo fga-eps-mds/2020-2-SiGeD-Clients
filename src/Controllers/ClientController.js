@@ -49,7 +49,7 @@ const create = async (req, res) => {
     });
     return res.json(client);
   } catch (error) {
-    return res.status(400).json({ message: error.keyValue });
+    return res.status(400).json({ duplicated: error.keyValue });
   }
 };
 
