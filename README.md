@@ -1,5 +1,9 @@
 # API de Clientes
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL3-blue.svg)](https://opensource.org/licenses/gpl-3.0.html)
+[![codecov](https://codecov.io/gh/fga-eps-mds/2020-2-SiGeD-Clients/branch/master/graph/badge.svg?token=06OWCVXW69)](https://codecov.io/gh/fga-eps-mds/2020-2-SiGeD-Clients)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2020-2-G4-Clients&metric=alert_status)](https://sonarcloud.io/dashboard?id=fga-eps-mds_2020-2-G4-Clients)
+[![Maintainability](https://api.codeclimate.com/v1/badges/1df404296f3bc6768bb4/maintainability)](https://codeclimate.com/github/fga-eps-mds/2020-2-SiGeD-Clients/maintainability)
+
 
 Essa API faz parte da arquitetura de microsserviços do projeto [`SiGeD`](https://github.com/fga-eps-mds/2020-2-SiGeD), sua funcionalidade é possibilitar o controle dos dados dos clientes. 
 
