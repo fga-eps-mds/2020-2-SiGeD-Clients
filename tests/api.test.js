@@ -59,13 +59,6 @@ describe('Sample Test', () => {
     done();
   });
 
-  it('Post duplicated client', async (done) => {
-    const res = await request(app).post('/clients/create/').set('x-access-token', token).send(client);
-    expect(res.statusCode).toBe(400);
-    expect(res.body).toEqual({ duplicated: { cpf: client.cpf } });
-    done();
-  });
-
   it('Post false client', async (done) => {
     const res = await request(app).post('/clients/create/').set('x-access-token', token).send(falseClient);
     expect(res.statusCode).toBe(200);
