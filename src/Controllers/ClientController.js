@@ -4,7 +4,6 @@ const validation = require('../utils/validate');
 const verifyChanges = require('../utils/verifyChanges');
 const userConnection = require('../utils/userConnection');
 
-
 const accessList = async (req, res) => {
   const { active } = req.query;
   if (active === 'false') {
@@ -24,14 +23,13 @@ const access = async (req, res) => {
     const client = await Client.findOne({ _id: id });
     return res.json(client);
   } catch (error) {
-    return res.status(400).json({message: 'Client not found'})
+    return res.status(400).json({ message: 'Client not found' });
   }
-
 };
 
 const create = async (req, res) => {
   const {
-    name, cpf, email, phone, secondaryPhone, address, office, active, location, userID
+    name, cpf, email, phone, secondaryPhone, address, office, active, location, userID,
   } = req.body;
 
   const errorMessage = validation.validate(name, cpf, email, phone, secondaryPhone, office);
@@ -42,7 +40,7 @@ const create = async (req, res) => {
 
   try {
     const token = req.headers['x-access-token'];
-    const userConnections = await userConnection.checkUserPermission(res, userID, token);
+    const userConnections = await userConnection.checkUserPermission(userID, token);
 
     if (userConnections.error) {
       return res.status(400).json({ message: userConnections.error });
@@ -61,7 +59,7 @@ const create = async (req, res) => {
       history: {
         userID,
         date,
-        label: 'created'
+        label: 'created',
       },
       createdAt: date,
       updatedAt: date,
@@ -75,7 +73,7 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   const { id } = req.params;
   const {
-    name, cpf, email, phone, secondaryPhone, office, address, location, userID
+    name, cpf, email, phone, secondaryPhone, office, address, location, userID,
   } = req.body;
 
   const errorMessage = validation.validate(name, cpf, email, phone, secondaryPhone, office);
@@ -87,13 +85,13 @@ const update = async (req, res) => {
   try {
     const token = req.headers['x-access-token'];
 
-    const userConnections = await userConnection.checkUserPermission(res, userID, token);
+    const userConnections = await userConnection.checkUserPermission(userID, token);
 
     if (userConnections.error) {
       return res.status(400).json({ message: userConnections.error });
     }
 
-    const history = await verifyChanges(req.body, id); 
+    const clientHistory = await verifyChanges(req.body, id);
     const client = await Client.findOneAndUpdate({ _id: id }, {
       name,
       cpf,
@@ -103,7 +101,7 @@ const update = async (req, res) => {
       office,
       location,
       address,
-      history,
+      clientHistory,
       updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
     },
     { new: true });
@@ -135,8 +133,8 @@ const toggleStatus = async (req, res) => {
         return res.json(client);
       });
     return updateReturn;
-  }catch (err) {
-    return res.status(400).json({message: 'Client not found'})
+  } catch (err) {
+    return res.status(400).json({ message: 'Client not found' });
   }
 };
 
@@ -147,12 +145,12 @@ const history = async (req, res) => {
     let error = '';
     const token = req.headers['x-access-token'];
     const clientFound = await Client.findOne({ _id: id });
-    const history = await Promise.all(clientFound.history.map(async (elem) => {
-      const user = await userConnection.getUser(req, elem.userID, token);
+    const clientHistory = await Promise.all(clientFound.history.map(async (elem) => {
+      const user = await userConnection.getUser(elem.userID, token);
 
       if (user.error) {
-        error = user.error
-        return
+        error = user.error;
+        return;
       }
       return {
         label: elem.label,
@@ -163,19 +161,18 @@ const history = async (req, res) => {
           _id: user._id,
           name: user.name,
           sector: user.sector,
-          role: user.role
-        }
-      }
-    }))
+          role: user.role,
+        },
+      };
+    }));
     if (error) {
       return res.status(400).json({ message: error });
     }
-    return res.json(history)
-
+    return res.json(clientHistory);
   } catch (error) {
     return res.status(400).json({ message: error.keyValue });
   }
-}
+};
 
 module.exports = {
   accessList, access, create, update, toggleStatus, history,
