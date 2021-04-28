@@ -101,7 +101,7 @@ const update = async (req, res) => {
       office,
       location,
       address,
-      clientHistory,
+      history: clientHistory,
       updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
     },
     { new: true });
