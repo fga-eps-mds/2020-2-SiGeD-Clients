@@ -4,8 +4,8 @@ const getUser = async (userID, token) => {
   try {
     const user = await APIUsers.get(`/users/${userID}`, { headers: { 'x-access-token': token } })
       .then((response) => response.data);
-    if(!user) {
-      return { error: 'User not found' }
+    if (!user) {
+      return { error: 'User not found' };
     }
     return user;
   } catch {

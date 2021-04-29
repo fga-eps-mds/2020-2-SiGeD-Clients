@@ -169,7 +169,7 @@ const history = async (req, res) => {
     }
     return res.json(clientHistory);
   } catch {
-    return res.status(400).json({ message: "Client not found" });
+    return res.status(400).json({ message: 'Client not found' });
   }
 };
 
