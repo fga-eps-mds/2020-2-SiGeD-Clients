@@ -7,7 +7,7 @@ const { USERS_URL } = process.env;
 
 it('Should get clients', async () => {
   const token = '';
-  const id = 'ID'
+  const id = '6089c3538dfebe00555bc17e'
   const res =  await getUser(id, token);
   expect(res).toEqual(user);
 });

@@ -1,5 +1,5 @@
 const user = require('./apiResponses/user.json')
-const GET_USER_BY_ID = '/users/ID'
+const GET_USER_BY_ID = '/users/6089c3538dfebe00555bc17e'
 
 const axios = {
   get: jest.fn((url) => {

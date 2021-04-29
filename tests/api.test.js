@@ -14,7 +14,7 @@ describe('Sample Test', () => {
     office: 'Policial',
     location: 'DPSS',
     address: 'Brasília',
-    userID: 'ID'
+    userID: '6089c3538dfebe00555bc17e'
   };
   const falseClient = {
     name: 'Bruno',
@@ -25,7 +25,7 @@ describe('Sample Test', () => {
     office: 'Policial',
     location: 'DPSS',
     address: 'Ceilândia',
-    userID: 'ID',
+    userID: '6089c3538dfebe00555bc17e',
     active: false,
   };
   const token = jwt.sign({
@@ -37,7 +37,7 @@ describe('Sample Test', () => {
     office: 'Policial',
     location: 'DPSS',
     address: 'brasilia',
-    userID: 'ID'
+    userID: '6089c3538dfebe00555bc17e'
   }, process.env.SECRET, {
     expiresIn: 240,
   });
@@ -88,7 +88,7 @@ describe('Sample Test', () => {
       office: '',
       location: '',
       address: '',
-      userID: 'ID'
+      userID: '6089c3538dfebe00555bc17e'
     };
     const res = await request(app).post('/clients/create/').set('x-access-token', token).send(errorClient);
     expect(res.statusCode).toBe(400);
@@ -202,6 +202,18 @@ describe('Sample Test', () => {
     const res = await request(app).put(`/clients/toggleStatus/${activeID}`).set('x-access-token', token);
     expect(res.statusCode).toBe(200);
     expect(res.body.active).toBe(false);
+  it('Get client history', async (done) => {
+    const res = await request(app).get(`/clients/history/${id}`).set('x-access-token', token);
+    expect(res.body[0].label).toBe('created');
+    expect(res.body[0].user.name).toBe('Julia Batista');
+    done();
+  });
+
+  it('Get client history error', async (done) => {
+    const error = { message: 'Client not found' }
+    const res = await request(app).get(`/clients/history/123`).set('x-access-token', token);
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toEqual({ "message": "Client not found" });
     done();
   });
 });
