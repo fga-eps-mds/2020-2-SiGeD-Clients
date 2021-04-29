@@ -2,7 +2,7 @@ const { APIUsers } = require('./baseService');
 
 const getUser = async (userID, token) => {
   try {
-    const user = await APIUsers.get(`http://${process.env.USERS_URL}:3001/users/${userID}`, { headers: { 'x-access-token': token } })
+    const user = await APIUsers.get(`/users/${userID}`, { headers: { 'x-access-token': token } })
       .then((response) => response.data);
     if(!user) {
       return { error: 'User not found' }

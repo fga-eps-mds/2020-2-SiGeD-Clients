@@ -13,7 +13,8 @@ describe('Sample Test', () => {
     secondaryPhone: '988884445',
     office: 'Policial',
     location: 'DPSS',
-    address: 'Brasilia',
+    address: 'Brasília',
+    userID: 'ID'
   };
   const falseClient = {
     name: 'Bruno',
@@ -23,7 +24,8 @@ describe('Sample Test', () => {
     secondaryPhone: '977854445',
     office: 'Policial',
     location: 'DPSS',
-    address: 'Ceilandia',
+    address: 'Ceilândia',
+    userID: 'ID',
     active: false,
   };
   const token = jwt.sign({
@@ -35,6 +37,7 @@ describe('Sample Test', () => {
     office: 'Policial',
     location: 'DPSS',
     address: 'brasilia',
+    userID: 'ID'
   }, process.env.SECRET, {
     expiresIn: 240,
   });
@@ -84,7 +87,8 @@ describe('Sample Test', () => {
       secondaryPhone: '',
       office: '',
       location: '',
-      address: ''
+      address: '',
+      userID: 'ID'
     };
     const res = await request(app).post('/clients/create/').set('x-access-token', token).send(errorClient);
     expect(res.statusCode).toBe(400);
@@ -94,16 +98,17 @@ describe('Sample Test', () => {
 
   it('Get clients', async (done) => {
     const res = await request(app).get('/clients/').set('x-access-token', token);
+    const lastIdx = res.body.length - 1; // Get last client on list
     expect(res.statusCode).toBe(200);
-    expect(res.body[res.body.length - 1].name).toBe(client.name);
-    expect(res.body[res.body.length - 1].cpf).toBe(client.cpf);
-    expect(res.body[res.body.length - 1].email).toBe(client.email);
-    expect(res.body[res.body.length - 1].phone).toBe(client.phone);
-    expect(res.body[res.body.length - 1].secondaryPhone).toBe(client.secondaryPhone);
-    expect(res.body[res.body.length - 1].office).toBe(client.office);
-    expect(res.body[res.body.length - 1].location).toBe(client.location);
-    expect(res.body[res.body.length - 1].address).toBe(client.address);
-    expect(res.body[res.body.length - 1].active).toBe(true);
+    expect(res.body[lastIdx].name).toBe(client.name);
+    expect(res.body[lastIdx].cpf).toBe(client.cpf);
+    expect(res.body[lastIdx].email).toBe(client.email);
+    expect(res.body[lastIdx].phone).toBe(client.phone);
+    expect(res.body[lastIdx].secondaryPhone).toBe(client.secondaryPhone);
+    expect(res.body[lastIdx].office).toBe(client.office);
+    expect(res.body[lastIdx].location).toBe(client.location);
+    expect(res.body[lastIdx].address).toBe(client.address);
+    expect(res.body[lastIdx].active).toBe(true);
     done();
   });
 
@@ -124,16 +129,17 @@ describe('Sample Test', () => {
 
   it('Get deactivated clients', async (done) => {
     const res = await request(app).get('/clients?active=false').set('x-access-token', token);
+    const lastIdx = res.body.length - 1; // Get last client on list
     expect(res.statusCode).toBe(200);
-    expect(res.body[res.body.length - 1].address).toBe(falseClient.address);
-    expect(res.body[res.body.length - 1].location).toBe(falseClient.location);
-    expect(res.body[res.body.length - 1].email).toBe(falseClient.email);
-    expect(res.body[res.body.length - 1].office).toBe(falseClient.office);
-    expect(res.body[res.body.length - 1].cpf).toBe(falseClient.cpf);
-    expect(res.body[res.body.length - 1].name).toBe(falseClient.name);
-    expect(res.body[res.body.length - 1].phone).toBe(falseClient.phone);
-    expect(res.body[res.body.length - 1].secondaryPhone).toBe(falseClient.secondaryPhone);
-    expect(res.body[res.body.length - 1].active).toBe(false);
+    expect(res.body[lastIdx].address).toBe(falseClient.address);
+    expect(res.body[lastIdx].location).toBe(falseClient.location);
+    expect(res.body[lastIdx].email).toBe(falseClient.email);
+    expect(res.body[lastIdx].office).toBe(falseClient.office);
+    expect(res.body[lastIdx].cpf).toBe(falseClient.cpf);
+    expect(res.body[lastIdx].name).toBe(falseClient.name);
+    expect(res.body[lastIdx].phone).toBe(falseClient.phone);
+    expect(res.body[lastIdx].secondaryPhone).toBe(falseClient.secondaryPhone);
+    expect(res.body[lastIdx].active).toBe(false);
     done();
   });
 
