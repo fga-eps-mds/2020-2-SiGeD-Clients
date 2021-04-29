@@ -1,8 +1,8 @@
 const moment = require('moment-timezone');
 const Client = require('../Models/ClientSchema');
-const validation = require('../utils/validate');
-const verifyChanges = require('../utils/verifyChanges');
-const userConnection = require('../utils/userConnection');
+const validation = require('../Utils/validate');
+const verifyChanges = require('../Utils/verifyChanges');
+const { getUser } = require('../Services/Axios/userService');
 
 const accessList = async (req, res) => {
   const { active } = req.query;
@@ -40,10 +40,10 @@ const create = async (req, res) => {
 
   try {
     const token = req.headers['x-access-token'];
-    const userConnections = await userConnection.checkUserPermission(userID, token);
+    const user = await getUser(userID, token);
 
-    if (userConnections.error) {
-      return res.status(400).json({ message: userConnections.error });
+    if (user.error) {
+      return res.status(400).json({ message: user.error });
     }
     const date = moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate();
     const client = await Client.create({
@@ -85,10 +85,10 @@ const update = async (req, res) => {
   try {
     const token = req.headers['x-access-token'];
 
-    const userConnections = await userConnection.checkUserPermission(userID, token);
+    const user = await getUser(userID, token);
 
-    if (userConnections.error) {
-      return res.status(400).json({ message: userConnections.error });
+    if (user.error) {
+      return res.status(400).json({ message: user.error });
     }
 
     const clientHistory = await verifyChanges(req.body, id);
@@ -146,8 +146,7 @@ const history = async (req, res) => {
     const token = req.headers['x-access-token'];
     const clientFound = await Client.findOne({ _id: id });
     const clientHistory = await Promise.all(clientFound.history.map(async (elem) => {
-      const user = await userConnection.getUser(elem.userID, token);
-
+      const user = await getUser(elem.userID, token);
       if (user.error) {
         error = user.error;
         return;
@@ -169,8 +168,8 @@ const history = async (req, res) => {
       return res.status(400).json({ message: error });
     }
     return res.json(clientHistory);
-  } catch (error) {
-    return res.status(400).json({ message: error.keyValue });
+  } catch {
+    return res.status(400).json({ message: "Client not found" });
   }
 };
 
