@@ -167,6 +167,7 @@ describe('Sample Test', () => {
       office: 'Policial',
       location: 'DPSS',
       address: 'Brasilia',
+      userID: '6089c3538dfebe00555bc17e'
     }
     const res = await request(app).put(`/clients/update/${activeID}`).set('x-access-token', token).send(updatedClientData);
     expect(res.statusCode).toBe(200);
@@ -191,6 +192,7 @@ describe('Sample Test', () => {
       office: '',
       location: '',
       address: '',
+      userID: '6089c3538dfebe00555bc17e'
     }
     const res = await request(app).put(`/clients/update/${activeID}`).set('x-access-token', token).send(updatedClientData);
     expect(res.statusCode).toBe(400);
@@ -204,9 +206,22 @@ describe('Sample Test', () => {
     expect(res.body.active).toBe(false);
     done();
   });
-  
+
   it('Get client history', async (done) => {
-    const res = await request(app).get(`/clients/history/${id}`).set('x-access-token', token);
+    const client = {
+      name: 'Vitor Leal',
+      cpf: '05903217141',
+      email: 'vitinho2201@email.com',
+      phone: '99887564',
+      secondaryPhone: '996687342',
+      office: 'Policial',
+      location: '1a DP',
+      address: 'Aguas Claras',
+      userID: '6089c3538dfebe00555bc17e'
+    };
+    const createClient = await request(app).post('/clients/create/').set('x-access-token', token).send(client);
+
+    const res = await request(app).get(`/clients/history/${createClient.body._id}`).set('x-access-token', token);
     expect(res.body[0].label).toBe('created');
     expect(res.body[0].user.name).toBe('Julia Batista');
     done();
