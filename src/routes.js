@@ -1,5 +1,5 @@
 const express = require('express');
-const { verifyJWT } = require('./utils/functionsJWS');
+const { verifyJWT } = require('./Utils/functionsJWS');
 
 const routes = express.Router();
 
@@ -10,5 +10,6 @@ routes.get('/clients/:id', verifyJWT, ClientController.access);
 routes.put('/clients/update/:id', verifyJWT, ClientController.update);
 routes.put('/clients/toggleStatus/:id', verifyJWT, ClientController.toggleStatus);
 routes.get('/clients', verifyJWT, ClientController.accessList);
+routes.get('/clients/history/:id', verifyJWT, ClientController.history);
 
 module.exports = routes;
