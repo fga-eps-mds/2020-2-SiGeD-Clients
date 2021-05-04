@@ -18,6 +18,20 @@ const validatePhone = (phone) => {
   return regex.test(phone);
 };
 
+const validateFeatures = (name, description, color) => {
+  const errors = [];
+
+  if (!name) {
+    errors.push('invalid name');
+  } if (!description) {
+    errors.push('invalid description');
+  } if (!color) {
+    errors.push('invalid color');
+  }
+
+  return errors;
+};
+
 const validate = (name, cpf, email, phone, secondaryPhone) => {
   const err = [];
 
@@ -41,4 +55,4 @@ const validateActive = (active) => {
   return regex.test(active);
 };
 
-module.exports = { validate, validateActive };
+module.exports = { validate, validateActive, validateFeatures };

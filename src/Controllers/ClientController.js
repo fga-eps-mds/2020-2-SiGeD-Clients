@@ -29,7 +29,7 @@ const access = async (req, res) => {
 
 const create = async (req, res) => {
   const {
-    name, cpf, email, phone, secondaryPhone, address, office, active, location, userID,
+    name, cpf, email, phone, secondaryPhone, address, office, active, location, userID, features,
   } = req.body;
 
   const errorMessage = validation.validate(name, cpf, email, phone, secondaryPhone, office);
@@ -54,6 +54,7 @@ const create = async (req, res) => {
       secondaryPhone,
       office,
       location,
+      features,
       address,
       active,
       history: {
@@ -73,7 +74,7 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   const { id } = req.params;
   const {
-    name, cpf, email, phone, secondaryPhone, office, address, location, userID,
+    name, cpf, email, phone, secondaryPhone, office, address, location, userID, features,
   } = req.body;
 
   const errorMessage = validation.validate(name, cpf, email, phone, secondaryPhone, office);
@@ -100,6 +101,7 @@ const update = async (req, res) => {
       secondaryPhone,
       office,
       location,
+      features,
       address,
       history: clientHistory,
       updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
