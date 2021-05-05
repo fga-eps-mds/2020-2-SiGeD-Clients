@@ -23,6 +23,12 @@ describe('Sample Test', () => {
     color: 'blue',
   }
 
+  const editFeature = {
+    name: 'sick',
+    description: 'rest in peace',
+    color: 'black',
+  }
+
   let ID;
 
   it('Post feature', async (done) => {
@@ -93,97 +99,93 @@ describe('Sample Test', () => {
     expect(res.body[lastIdx].description).toBe(feature.description);
     expect(res.body[lastIdx].color).toBe(feature.color);
     done();
-  })
+  });
 
   it('Get feature with invalid token', async (done) => {
     const res = await request(app).get('/features/').set('x-access-token', 'invalidToken');
     expect(res.statusCode).toBe(500);
     expect(res.body).toEqual({"auth": false, "message": "The token could not be authenticated."})
     done();
-  })
+  });
 
   it('Get feature without token', async (done) => {
     const res = await request(app).get('/features/');
     expect(res.statusCode).toBe(401);
     expect(res.body).toEqual({ "auth": false, "message": "No token was provided." })
     done();
-  })
+  });
 
   it('Put feature', async (done) => {
-    const editFeature = {
-      name: 'sick',
-      description: 'rest in peace',
-      color: 'black',
-    }
     const res = await request(app).put(`/feature/update/${ID}`).set('x-access-token', token).send(editFeature);
     expect(res.statusCode).toBe(200);
     expect(res.body.name).toBe(editFeature.name);
     expect(res.body.description).toBe(editFeature.description);
     expect(res.body.color).toBe(editFeature.color);
     done();
-  })
+  });
 
   it('Put feature with invalids inputs', async (done) => {
-    const editFeature = {
+    const editFeatureInvalid = {
       name: '',
       description: '',
       color: '',
     }
-    const res = await request(app).put(`/feature/update/${ID}`).set('x-access-token', token).send(editFeature);
+    const res = await request(app).put(`/feature/update/${ID}`).set('x-access-token', token).send(editFeatureInvalid);
     expect(res.statusCode).toBe(400);
     expect(res.body).toEqual({"message": ['invalid name', 'invalid description', 'invalid color']});
     done();
-  })
+  });
 
   it('Put feature with invalid token', async (done) => {
-    const editFeature = {
-      name: 'sick',
-      description: 'rest in peace',
-      color: 'black',
-    }
     const res = await request(app).put(`/feature/update/${ID}`).set('x-access-token', 'invalidToken').send(editFeature);
     expect(res.statusCode).toBe(500);
     expect(res.body).toEqual({"auth": false, "message": "The token could not be authenticated."})
     done();
-  })
+  });
 
   it('Put feature without token', async (done) => {
-    const editFeature = {
-      name: 'sick',
-      description: 'rest in peace',
-      color: 'black',
-    }
     const res = await request(app).put(`/feature/update/${ID}`).send(editFeature);
     expect(res.statusCode).toBe(401);
     expect(res.body).toEqual({ "auth": false, "message": "No token was provided." })
     done();
-  })
+  });
 
   it('Put feature with invalid ID', async (done) => {
-    const editFeature = {
-      name: 'sick',
-      description: 'rest in peace',
-      color: 'black',
-    }
     const res = await request(app).put(`/feature/update/false`).set('x-access-token', token).send(editFeature);
     expect(res.statusCode).toBe(400);
     expect(res.body).toEqual({ "message": "Invalid ID" })
     done();
-  })
+  });
+
+  it('Get features by using ID', async (done) => {
+    const res = await request(app).post('/featuresbyid/').set('x-access-token', token).send({ featuresList: [ID] });
+    expect(res.statusCode).toBe(200);
+    expect(res.body[res.body.length - 1].name).toBe(editFeature.name);
+    expect(res.body[res.body.length - 1].description).toBe(editFeature.description);
+    expect(res.body[res.body.length - 1].color).toBe(editFeature.color);
+    done();
+  });
+
+  it('Get features by using invalid ID', async (done) => {
+    const res = await request(app).post('/featuresbyid/').set('x-access-token', token).send({ featuresList: [123] });
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toEqual({ "message": "Invalid ID" }) 
+    done();
+  });
   
   it('delete feature', async (done) => {
     const res = await request(app).delete(`/feature/delete/${ID}`).set('x-access-token', token);
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual({"message": "success"});
     done();
-  })
+  });
 
   it('delete feature with invalid ID', async (done) => {
     const res = await request(app).delete('/feature/delete/false').set('x-access-token', token);
     expect(res.statusCode).toBe(400);
     expect(res.body).toEqual({"message": "Invalid ID"});
     done();
-  })
+  });
 
 });
 

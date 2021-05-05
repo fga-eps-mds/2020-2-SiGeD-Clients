@@ -7,35 +7,38 @@ describe('Sample Test', () => {
 
   const client = {
     name: 'Davi Rogerio',
-    cpf: '17834632140',
-    email: 'davi@gmail.com',
+    cpf: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
+    email: `${Math.random().toString(36).substr(2, 5)}@gmail.com`,
     phone: '988884444',
     secondaryPhone: '988884445',
     office: 'Policial',
     location: 'DPSS',
+    features: ['608dc9a61286380b31a51233'],
     address: 'Brasília',
     userID: '6089c3538dfebe00555bc17e'
   };
   const falseClient = {
     name: 'Bruno',
-    cpf: '17840632141',
-    email: 'brunoTI@gmail.com',
+    cpf: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
+    email: `${Math.random().toString(36).substr(2, 5)}@gmail.com`,
     phone: '977854444',
     secondaryPhone: '977854445',
     office: 'Policial',
     location: 'DPSS',
+    features: ['608dc9a61286380b31a51233'],
     address: 'Ceilândia',
     userID: '6089c3538dfebe00555bc17e',
     active: false,
   };
   const token = jwt.sign({
     name: 'Test',
-    cpf: '12345678911',
-    email: 'test@hotmail.com',
+    cpf: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
+    email: `${Math.random().toString(36).substr(2, 5)}@gmail.com`,
     phone: '988884444',
     secondaryPhone: '998888444',
     office: 'Policial',
     location: 'DPSS',
+    features: ['608dc9a61286380b31a51233'],
     address: 'brasilia',
     userID: '6089c3538dfebe00555bc17e'
   }, process.env.SECRET, {
@@ -127,6 +130,7 @@ describe('Sample Test', () => {
     expect(res.body.name).toBe(client.name);
     expect(res.body.email).toBe(client.email);
     expect(res.body.location).toBe(client.location);
+    expect(res.body.features).toEqual(client.features);
     expect(res.body.address).toBe(client.address);
     expect(res.body.office).toBe(client.office);
     activeID = res.body._id;
@@ -231,8 +235,8 @@ describe('Sample Test', () => {
   it('Update client', async (done) => {
     const updatedClientData = {
       name: 'Davi Arthur',
-      cpf: '69874536822',
-      email: 'arthur@gmail.com',
+      cpf: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
+      email: `${Math.random().toString(36).substr(2, 5)}@gmail.com`,
       phone: '9966885522',
       secondaryPhone: '123688559',
       office: 'Policial',
@@ -281,8 +285,8 @@ describe('Sample Test', () => {
   it('Get client history', async (done) => {
     const client = {
       name: 'Vitor Leal',
-      cpf: '05903217141',
-      email: 'vitinho2201@email.com',
+      cpf: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
+      email: `${Math.random().toString(36).substr(2, 5)}@gmail.com`,
       phone: '99887564',
       secondaryPhone: '996687342',
       office: 'Policial',
@@ -291,7 +295,6 @@ describe('Sample Test', () => {
       userID: '6089c3538dfebe00555bc17e'
     };
     const createClient = await request(app).post('/clients/create/').set('x-access-token', token).send(client);
-
     const res = await request(app).get(`/clients/history/${createClient.body._id}`).set('x-access-token', token);
     expect(res.body[0].label).toBe('created');
     expect(res.body[0].user.name).toBe('Julia Batista');
