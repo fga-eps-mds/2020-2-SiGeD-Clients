@@ -46,6 +46,12 @@ const updateFeature = async (req, res) => {
     name, description, color
   } = req.body;
 
+  const errorList = validateFeatures(name, description, color);
+
+  if (errorList.length) {
+    return res.status(400).json({ message: errorList });
+  }
+
   try {
     const updateResponse = await Feature.findOneAndUpdate({ _id: id }, {
       name,
