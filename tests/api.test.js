@@ -7,8 +7,8 @@ describe('Sample Test', () => {
 
   const client = {
     name: 'Davi Rogerio',
-    cpf: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
     email: `${Math.random().toString(36).substr(2, 5)}@gmail.com`,
+    cpf: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
     phone: '988884444',
     secondaryPhone: '988884445',
     office: 'Policial',
