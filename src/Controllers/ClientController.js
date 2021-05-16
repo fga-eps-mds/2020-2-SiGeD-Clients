@@ -173,6 +173,12 @@ const history = async (req, res) => {
   }
 };
 
+const newestFourClientsGet = async (req, res) => {
+  const clients = await Client.find().limit(4).sort({ createdAt: -1 });
+
+  return res.status(200).json(clients);
+};
+
 module.exports = {
-  accessList, access, create, update, toggleStatus, history,
+  accessList, access, create, update, toggleStatus, history, newestFourClientsGet,
 };

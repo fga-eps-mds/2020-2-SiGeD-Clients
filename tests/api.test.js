@@ -42,8 +42,79 @@ describe('Sample Test', () => {
     expiresIn: 240,
   });
 
+  const client1 = {
+    name: 'Cliente Um',
+    cpf: '59812441000',
+    email: 'um@gmail.com',
+    phone: '988884401',
+    secondaryPhone: '988884410',
+    office: 'Policial',
+    location: 'DPSS',
+    address: 'Brasília',
+    userID: '6089c3538dfebe00555bc17e'
+  };
+  const client2 = {
+    name: 'Cliente Dois',
+    cpf: '88776555003',
+    email: 'dois@gmail.com',
+    phone: '988884402',
+    secondaryPhone: '988884420',
+    office: 'Policial',
+    location: 'DPSS',
+    address: 'Brasília',
+    userID: '6089c3538dfebe00555bc17e'
+  };
+  const client3 = {
+    name: 'Cliente Três',
+    cpf: '19026752075',
+    email: 'tres@gmail.com',
+    phone: '988884403',
+    secondaryPhone: '988884430',
+    office: 'Policial',
+    location: 'DPSS',
+    address: 'Brasília',
+    userID: '6089c3538dfebe00555bc17e'
+  };
+  const client4 = {
+    name: 'Cliente Quatro',
+    cpf: '77791867095',
+    email: 'quatro@gmail.com',
+    phone: '988884404',
+    secondaryPhone: '988884440',
+    office: 'Policial',
+    location: 'DPSS',
+    address: 'Brasília',
+    userID: '6089c3538dfebe00555bc17e'
+  };
+  const client5 = {
+    name: 'Cliente Cinco',
+    cpf: '98094963034',
+    email: 'cinco@gmail.com',
+    phone: '988884405',
+    secondaryPhone: '988884450',
+    office: 'Policial',
+    location: 'DPSS',
+    address: 'Brasília',
+    userID: '6089c3538dfebe00555bc17e'
+  };
+
+  beforeAll(async () => {
+    await request(app).post('/clients/create/').set('x-access-token', token).send(client1);
+    await request(app).post('/clients/create/').set('x-access-token', token).send(client2);
+    await request(app).post('/clients/create/').set('x-access-token', token).send(client3);
+    await request(app).post('/clients/create/').set('x-access-token', token).send(client4);
+    await request(app).post('/clients/create/').set('x-access-token', token).send(client5);
+  })
+
   it('App is defined', (done) => {
     expect(app).toBeDefined();
+    done();
+  });
+
+  it('Get newest four clients', async (done) => {
+    const res = await request(app).get('/clients/newest-four').set('x-access-token', token);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.length).toBe(4);
     done();
   });
 
