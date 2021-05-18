@@ -64,6 +64,10 @@ const clientSchema = new mongoose.Schema({
       default: '',
     },
   }],
+  features: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Feature' }],
+    require: true,
+  },
   createdAt: {
     type: Date,
     require: true,
