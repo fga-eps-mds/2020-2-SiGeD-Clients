@@ -29,7 +29,8 @@ const access = async (req, res) => {
 
 const create = async (req, res) => {
   const {
-    name, cpf, email, phone, secondaryPhone, address, office, active, location, userID, features, image,
+    name, cpf, email, phone, secondaryPhone, address,
+    office, active, location, userID, features, image,
   } = req.body;
 
   const errorMessage = validation.validate(name, cpf, email, phone, secondaryPhone, office);
@@ -75,7 +76,8 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   const { id } = req.params;
   const {
-    name, cpf, email, phone, secondaryPhone, office, address, location, userID, features,
+    name, cpf, email, phone, secondaryPhone, office,
+    address, location, userID, features, image,
   } = req.body;
 
   const errorMessage = validation.validate(name, cpf, email, phone, secondaryPhone, office);
