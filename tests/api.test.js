@@ -14,6 +14,7 @@ describe('Sample Test', () => {
     office: 'Policial',
     location: 'DPSS',
     features: ['608dc9a61286380b31a51233'],
+    image: '1244365aahsbch',
     address: 'Brasília',
     userID: '6089c3538dfebe00555bc17e'
   };
@@ -26,6 +27,7 @@ describe('Sample Test', () => {
     office: 'Policial',
     location: 'DPSS',
     features: ['608dc9a61286380b31a51233'],
+    image: '1244365aahsbch',
     address: 'Ceilândia',
     userID: '6089c3538dfebe00555bc17e',
     active: false,
@@ -143,6 +145,7 @@ describe('Sample Test', () => {
     expect(res.body.email).toBe(client.email);
     expect(res.body.location).toBe(client.location);
     expect(res.body.features).toEqual(client.features);
+    expect(res.body.image).toEqual(client.image);
     expect(res.body.address).toBe(client.address);
     expect(res.body.office).toBe(client.office);
     activeID = res.body._id;

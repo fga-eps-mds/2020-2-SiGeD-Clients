@@ -68,6 +68,10 @@ const clientSchema = new mongoose.Schema({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Feature' }],
     require: true,
   },
+  image: {
+    type: String,
+    require: false,
+  },
   createdAt: {
     type: Date,
     require: true,
