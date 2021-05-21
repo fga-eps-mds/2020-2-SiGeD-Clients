@@ -59,6 +59,33 @@ Para receber os dados dos últimos quatro clientes cadastrados.
 
 Para receber o historico de setores de um cliente específico utilizando o `id`.
 
+
+**GET: `/features/`**
+
+Para receber os dados de todas as características cadastradas.
+
+**POST: `/featuresbyid/`**
+
+Para adicionar novas características à um cliente.
+
+```json
+{
+    "featuresList": "[ id, id2, ... ]",
+}
+```
+
+**POST: `/feature/create`**
+
+Para criar uma nova característica.
+
+```json
+{
+    "name": "Nome da Caractrística",
+    "description": "Descrição da Característica",
+    "color": "#000000",
+}
+```
+
 **POST: `/clients/create`**
 
 Para criar um novo cliente, envie os dados nesse formato:
@@ -95,3 +122,19 @@ Para atualizar os dados do cliente, envie os dados atualizados seguindo o padrã
 
 Para desativar ou reativar um cliente pelo `id`.
 
+**PUT: `/feature/update/:id`**
+
+Para atualizar uma característica existente pelo `id`.
+
+```json
+{
+    "name": "Nome da Caractrística",
+    "description": "Descrição da Característica",
+    "color": "#000000",
+}
+```
+
+
+**DELETE: `/feature/delete/:id`**
+
+Para deletar uma característica pelo `id`.
