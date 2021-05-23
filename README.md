@@ -18,13 +18,34 @@ A documentação do projeto pode ser acessada pelo nosso site em https://fga-eps
 
 ## Testes
 
-Todas as funções adicionadas nessa API devem ser testadas, o repositŕorio aceita até 10% do total de lihas não testadas. Para rodar os testes nesse repositŕio deve ser executado o comando:
+Todas as funções adicionadas nessa API devem ser testadas, o repositório aceita até 10% do total de lihas não testadas. Para rodar os testes nesse repositŕio deve ser executado o comando:
 
 ```bash
 docker-compose run api_clients bash -c  "yarn && yarn jest --coverage --forceExit"
 ```
 
 ## Como rodar?
+
+O arquivo .env possui configurações iniciais que podem ser alteradas de acordo com a necessidade. São elas:
+ - SECRET: chave para criptografia das senhas.
+ - DB_USER: usuário de acesso ao banco de dados.
+ - DB_PASS: senha de acesso ao banco de dados.
+ - DB_NAME: nome da base de dados.
+ - DB_HOST: host da base de dados.
+ - USERS_URL: conexão entre a api de usuários e clientes.
+
+Se os servidores mudarem, deve-se colocar o IP os campos CLIENTS_URL e USERS_URL.
+
+Veja o exemplo abaixo:
+
+```
+SECRET=chavedesegredo
+DB_USER=api_user
+DB_PASS=api_password
+DB_NAME=clients_database
+DB_HOST=db_clients
+USERS_URL=backend_users
+```
 
 Para rodar a API é preciso usar os seguintes comandos usando o docker:
 
