@@ -16,7 +16,36 @@ Caso reste duvidas você também pode entrar em contato conosco criando uma issu
 
 A documentação do projeto pode ser acessada pelo nosso site em https://fga-eps-mds.github.io/2020-2-SiGeD/ ou você pode acessar pela [SiGeD Documentação](https://fga-eps-mds.github.io/2020-2-SiGeD/home/)
 
+## Testes
+
+Todas as funções adicionadas nessa API devem ser testadas, o repositório aceita até 10% do total de lihas não testadas. Para rodar os testes nesse repositŕio deve ser executado o comando:
+
+```bash
+docker-compose run api_clients bash -c  "yarn && yarn jest --coverage --forceExit"
+```
+
 ## Como rodar?
+
+O arquivo .env possui configurações iniciais que podem ser alteradas de acordo com a necessidade. São elas:
+ - SECRET: chave para criptografia das senhas.
+ - DB_USER: usuário de acesso ao banco de dados.
+ - DB_PASS: senha de acesso ao banco de dados.
+ - DB_NAME: nome da base de dados.
+ - DB_HOST: host da base de dados.
+ - USERS_URL: conexão entre a api de usuários e clientes.
+
+Se os servidores mudarem, deve-se colocar o IP os campos CLIENTS_URL e USERS_URL.
+
+Veja o exemplo abaixo:
+
+```
+SECRET=chavedesegredo
+DB_USER=api_user
+DB_PASS=api_password
+DB_NAME=clients_database
+DB_HOST=db_clients
+USERS_URL=backend_users
+```
 
 Para rodar a API é preciso usar os seguintes comandos usando o docker:
 
@@ -42,6 +71,41 @@ Para receber os dados dos clientes ativos.
 **GET: `/clients/:id`**
 
 Para receber os dados de um cliente específico utilizando o `id`.
+
+**GET: `/clients/newest-four`**
+
+Para receber os dados dos últimos quatro clientes cadastrados.
+
+**GET: `/clients/history:id`**
+
+Para receber o historico de setores de um cliente específico utilizando o `id`.
+
+
+**GET: `/features/`**
+
+Para receber os dados de todas as características cadastradas.
+
+**POST: `/featuresbyid/`**
+
+Para adicionar novas características à um cliente.
+
+```json
+{
+    "featuresList": "[ id, id2, ... ]",
+}
+```
+
+**POST: `/feature/create`**
+
+Para criar uma nova característica.
+
+```json
+{
+    "name": "Nome da Caractrística",
+    "description": "Descrição da Característica",
+    "color": "#000000",
+}
+```
 
 **POST: `/clients/create`**
 
@@ -75,7 +139,23 @@ Para atualizar os dados do cliente, envie os dados atualizados seguindo o padrã
 }
 ```
 
-**PUT: `/clients/deactivate/:id`**
+**PUT: `/clients/toggleStatus/:id`**
 
-Para desativar um cliente pelo `id`.
+Para desativar ou reativar um cliente pelo `id`.
 
+**PUT: `/feature/update/:id`**
+
+Para atualizar uma característica existente pelo `id`.
+
+```json
+{
+    "name": "Nome da Caractrística",
+    "description": "Descrição da Característica",
+    "color": "#000000",
+}
+```
+
+
+**DELETE: `/feature/delete/:id`**
+
+Para deletar uma característica pelo `id`.
